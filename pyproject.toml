@@ -1,0 +1,37 @@
+[project]
+name = "cop"
+description = "Monitor conneted iDevice and notify"
+readme = "README.md"
+requires-python = ">=3.9"
+keywords = ["cop"]
+dynamic = ["dependencies", "version"]
+
+[project.scripts]
+cop = "cop.__main__:cli"
+
+[tool.setuptools.packages.find]
+exclude = ["tests*"]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"]}
+version = { attr = "cop._version.__version__" }
+
+[tool.setuptools_scm]
+version_file = "cop/_version.py"
+
+[build-system]
+requires = ["setuptools>=43.0.0", "setuptools_scm>=8", "tomli", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+line-length = 127
+
+[tool.ruff.format]
+qoute-style = "single"
+
+[tool.ruff.lint]
+extend-select = ["I"]
+
+[tool.ruff.lint.isort]
+force-sort-within-sections = true
+lines-after-imports = 2

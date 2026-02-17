@@ -1,7 +1,5 @@
 # cop
 
-[[_TOC_]]
-
 ## Overview
 
 cop is a small python utility monitoring each connected device, taking the following action:
@@ -13,7 +11,7 @@ cop is a small python utility monitoring each connected device, taking the follo
 
 - Install
 ```shell
-  git clone ...
+  git clone git@github.com:WeissShahar/cop.git
   python3 -m pip install -e cop
   python3 -m cop --install-launch-agent  
  ```

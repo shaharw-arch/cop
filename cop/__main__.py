@@ -1,17 +1,19 @@
 import platform
 import time
 from pathlib import Path
+import click
+from enum import Enum
+import launch_agent
 
 from pymobiledevice3.lockdown import LockdownClient, create_using_usbmux
 from pymobiledevice3.usbmux import MuxDevice, list_devices
 from plumbum import local
-from enum import Enum
-
-import launch_agent
 
 osascript = local['osascript']
 
-GRAY_LIST_PATH =  Path(__file__).resolve().parent / 'gray_devices_list.txt'
+GRAY_LIST_PATH = Path(__file__).resolve().parent / 'gray_devices_list.txt'
+
+
 class AlertType(Enum):
     Information = 'informational'
     Warning = 'warning'
@@ -42,20 +44,20 @@ def handle_notify_event(udid: str, product_type: str, product_version: str, devi
         return
 
 
-def handle_lockdown_connection(lockdown: LockdownClient):
-    assert lockdown.udid is not None
-    assert lockdown.product_type is not None
-    handle_notify_event(
-        lockdown.udid, lockdown.product_type, lockdown.product_version, is_device_in_gray_list(lockdown.udid)
-    )
-
-
 def is_device_in_gray_list(device_udid):
     with open(GRAY_LIST_PATH) as f:
         for line in f:
             if line.strip().upper() == device_udid:
                 return True
     return False
+
+
+def handle_lockdown_connection(lockdown: LockdownClient):
+    assert lockdown.udid is not None
+    assert lockdown.product_type is not None
+    handle_notify_event(
+        lockdown.udid, lockdown.product_type, lockdown.product_version, is_device_in_gray_list(lockdown.udid)
+    )
 
 
 def handle_mux_device(mux_device: MuxDevice):
@@ -72,6 +74,13 @@ def handle_mux_device(mux_device: MuxDevice):
         handle_lockdown_connection(lockdown)
 
 
+@click.command()
+@click.option(
+    '--install-launch-agent',
+    default=False,
+    is_flag=True,
+    help='Install cop as a launchd launch and exit',
+)
 def cli(install_launch_agent: bool = False) -> None:
     if install_launch_agent:
         launch_agent.install_launch_agent(platform.machine() == 'arm64')
