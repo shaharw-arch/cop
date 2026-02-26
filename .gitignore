@@ -1,0 +1,4 @@
+__pycache__/
+cop/_version.py
+.DS_Store
+*.egg-info/

@@ -3,8 +3,8 @@ import time
 from pathlib import Path
 import click
 from enum import Enum
-import launch_agent
 
+from cop import launch_agent
 from pymobiledevice3.lockdown import LockdownClient, create_using_usbmux
 from pymobiledevice3.usbmux import MuxDevice, list_devices
 from plumbum import local
