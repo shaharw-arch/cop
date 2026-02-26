@@ -38,7 +38,7 @@ def handle_notify_event(udid: str, product_type: str, product_version: str, devi
     if not device_in_gray_list:
         alert(
             '🚨 Unlisted Phone Detected!',
-            f'{product_type}{product_version}\n{udid}\n Please Notify Allen / Yair',
+            f'{product_type} {product_version}\n{udid}\n Please Notify Allen / Yair',
             alert_type=AlertType.Critical,
         )
         return
